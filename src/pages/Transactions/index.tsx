@@ -7,8 +7,11 @@ import {
   TransactionsContent,
   TransactionsTable,
 } from './styles';
+import { useTransaction } from '../../hooks/useTransaction';
 
 const TransactionsPage = () => {
+  const { transactions } = useTransaction();
+
   return (
     <TransactionsContainer>
       <Header />
@@ -19,23 +22,18 @@ const TransactionsPage = () => {
 
         <TransactionsTable>
           <tbody>
-            <tr>
-              <td width="50%">Desenvolvimento de site</td>
-              <td>
-                <PriceHighlight variant="income">R$ 12.000,00</PriceHighlight>
-              </td>
-              <td>Venda</td>
-              <td>09/04/2023</td>
-            </tr>
-
-            <tr>
-              <td width="50%">Hamburger</td>
-              <td>
-                <PriceHighlight variant="outcome">- R$ 59,00</PriceHighlight>
-              </td>
-              <td>Alimentação</td>
-              <td>09/04/2023</td>
-            </tr>
+            {transactions.map(transaction => (
+              <tr key={transaction.id}>
+                <td width="50%">{transaction.description}</td>
+                <td>
+                  <PriceHighlight variant={transaction.type}>
+                    {transaction.price}
+                  </PriceHighlight>
+                </td>
+                <td>{transaction.category}</td>
+                <td>{transaction.createdAt}</td>
+              </tr>
+            ))}
           </tbody>
         </TransactionsTable>
       </TransactionsContent>
