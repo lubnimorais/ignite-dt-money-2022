@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { api } from '../services/api';
 
 interface ITransaction {
   id: number;
@@ -16,8 +17,22 @@ interface ITransaction {
   createdAt: string;
 }
 
+interface ICreateTransaction {
+  description: string;
+  price: number;
+  category: string;
+  type: 'income' | 'outcome';
+}
+
 interface ITransactionContextData {
   transactions: ITransaction[];
+  fetchTransactions: (query?: string) => Promise<void>;
+  createTransaction: ({
+    description,
+    price,
+    category,
+    type,
+  }: ICreateTransaction) => Promise<void>;
 }
 
 interface ITransactionProviderProps {
@@ -29,19 +44,43 @@ const TransactionContext = createContext({} as ITransactionContextData);
 const TransactionProvider = ({ children }: ITransactionProviderProps) => {
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
-  const loadTransactions = useCallback(async () => {
-    const response = await fetch('http://localhost:3333/transactions');
-    const data = await response.json();
+  const fetchTransactions = useCallback(async (query?: string) => {
+    const response = await api.get('/transactions', {
+      params: {
+        _sort: 'createdAt',
+        _order: 'desc',
+        q: query,
+      },
+    });
 
-    setTransactions(data);
+    setTransactions(response.data);
   }, []);
 
+  const createTransaction = useCallback(
+    async ({ description, price, category, type }: ICreateTransaction) => {
+      const response = await api.post('/transactions', {
+        description,
+        price: price * 100,
+        category,
+        type,
+        createdAt: new Date(),
+      });
+
+      const newTransaction = response.data;
+
+      setTransactions(oldState => [newTransaction, ...oldState]);
+    },
+    [],
+  );
+
   useEffect(() => {
-    loadTransactions();
-  }, [loadTransactions]);
+    fetchTransactions();
+  }, [fetchTransactions]);
 
   return (
-    <TransactionContext.Provider value={{ transactions }}>
+    <TransactionContext.Provider
+      value={{ transactions, fetchTransactions, createTransaction }}
+    >
       {children}
     </TransactionContext.Provider>
   );

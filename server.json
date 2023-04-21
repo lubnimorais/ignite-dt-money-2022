@@ -15,6 +15,30 @@
       "category": "Alimentação",
       "price": 5000,
       "createdAt": "2023-04-18T01:08:24.815Z"
+    },
+    {
+      "description": "Trilogia Star Wars",
+      "price": 6500,
+      "category": "Livro",
+      "type": "outcome",
+      "createdAt": "2023-04-21T18:13:45.921Z",
+      "id": 3
+    },
+    {
+      "description": "Aplicativo médico",
+      "price": 850000,
+      "category": "Venda",
+      "type": "income",
+      "createdAt": "2023-04-21T18:15:18.645Z",
+      "id": 4
+    },
+    {
+      "description": "Pastel de carne",
+      "price": 1400,
+      "category": "Alimentação",
+      "type": "outcome",
+      "createdAt": "2023-04-21T18:29:47.118Z",
+      "id": 5
     }
   ]
 }
