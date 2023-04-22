@@ -1,11 +1,7 @@
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+
+import { createContext, useContextSelector } from 'use-context-selector';
+
 import { api } from '../services/api';
 
 interface ITransaction {
@@ -87,7 +83,9 @@ const TransactionProvider = ({ children }: ITransactionProviderProps) => {
 };
 
 function useTransaction(): ITransactionContextData {
-  const context = useContext(TransactionContext);
+  const context = useContextSelector(TransactionContext, selector => {
+    return selector;
+  });
 
   if (!context) {
     alert('useContext must be used with TransactionProvider');

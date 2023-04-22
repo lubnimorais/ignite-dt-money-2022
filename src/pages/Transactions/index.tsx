@@ -1,13 +1,16 @@
+import { useTransaction } from '../../hooks/useTransaction';
+
 import { Header } from '../../components/Header';
 import { Summary } from '../../components/Summary';
 import { SearchForm } from './components/SearchForm';
+
 import {
   PriceHighlight,
   TransactionsContainer,
   TransactionsContent,
   TransactionsTable,
 } from './styles';
-import { useTransaction } from '../../hooks/useTransaction';
+
 import { dateFormatter, priceFormatter } from '../../utils/formatter';
 
 const TransactionsPage = () => {
